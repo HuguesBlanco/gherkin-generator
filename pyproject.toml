@@ -5,6 +5,7 @@ description = "Convert Playwright recordings to Gherkin tests using LangGraph"
 authors = [{ name = "Hugues Blanco Alvarez" }]
 dependencies = [
     "langgraph",
+    "langchain",
     "langchain-google-genai",
     "python-dotenv",
     "langchain-core",

@@ -1,0 +1,7 @@
+Here is a list of actions executed on a website. Those actions represent a test.
+I would like you to format this test in Gherkin language.
+
+Actions:
+```
+{bullet_list}
+```

@@ -1,8 +1,13 @@
 """LangGraph workflow for converting Playwright recordings to Gherkin tests."""
 
+import os
 import re
+from pathlib import Path
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import PromptTemplate
+from config import get_gemini_api_key
 
 
 # Define the state: what data flows through the graph
@@ -90,10 +95,64 @@ def anonymize_node(state: WorkflowState) -> WorkflowState:
     return state
 
 
+def load_prompt_template(filename: str, input_variables: list[str]) -> PromptTemplate:
+    """Load a prompt template from a text file in the prompts directory.
+    
+    Args:
+        filename: Name of the prompt file (e.g., 'playwright_to_bullet_list.txt')
+        input_variables: List of variable names used in the template
+        
+    Returns:
+        PromptTemplate instance
+    """
+    # Get the directory where this file is located
+    current_dir = Path(__file__).parent
+    prompt_path = current_dir / "prompts" / filename
+    
+    with open(prompt_path, "r", encoding="utf-8") as f:
+        template_content = f.read()
+    
+    return PromptTemplate(
+        input_variables=input_variables,
+        template=template_content
+    )
+
+
 def playwright_to_bullet_list_node(state: WorkflowState) -> WorkflowState:
-    """Convert Playwright record to natural language bullet list."""
-    # TODO: Implement in Step 6
-    state["bullet_list"] = ""
+    """Convert Playwright record to natural language bullet list.
+    
+    Uses Google Gemini LLM to transform the anonymized Playwright script
+    into a bullet list of actions and assertions in natural language.
+    """
+    # Get the anonymized Playwright record
+    playwright_record = state["anonymized_record"]
+    
+    # Load and format the prompt template
+    prompt_template = load_prompt_template(
+        "playwright_to_bullet_list.txt",
+        input_variables=["playwright_record"]
+    )
+    formatted_prompt = prompt_template.format(
+        playwright_record=playwright_record
+    )
+    
+    # Initialize the LLM with the API key
+    # Using gemini-2.5-flash-lite: fastest, cost-efficient, stable model
+    # See: https://ai.google.dev/gemini-api/docs/models#gemini-2.5-flash-lite
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash-lite",
+        google_api_key=get_gemini_api_key(),
+        temperature=0,  # Lower temperature for more consistent output
+    )
+    
+    # Call the LLM
+    response = llm.invoke(formatted_prompt)
+    
+    # Extract the bullet list from the response
+    # The response is a message object, we need the content
+    bullet_list = response.content if hasattr(response, 'content') else str(response)
+    
+    state["bullet_list"] = bullet_list
     return state
 
 
