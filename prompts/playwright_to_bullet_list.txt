@@ -1,6 +1,6 @@
-Here is a Playwright record. This represents a manual test recorded using Playwright built-in recorder.
-I would like you to transform this record in a list of actions in natural language.
-The result must be a bullet list with all actions and assertions in natural language.
+Transform this Playwright record into a bullet list of actions and assertions in natural language.
+
+Output only the bullet list, without any explanatory text or introduction.
 
 Playwright record:
 ```

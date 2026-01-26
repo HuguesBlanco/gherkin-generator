@@ -157,9 +157,41 @@ def playwright_to_bullet_list_node(state: WorkflowState) -> WorkflowState:
 
 
 def bullet_list_to_gherkin_node(state: WorkflowState) -> WorkflowState:
-    """Convert bullet list to Gherkin format."""
-    # TODO: Implement in Step 7
-    state["gherkin"] = ""
+    """Convert bullet list to Gherkin format.
+    
+    Uses Google Gemini LLM to transform the natural language bullet list
+    into Gherkin test format.
+    """
+    # Get the bullet list from state
+    bullet_list = state["bullet_list"]
+    
+    # Load and format the prompt template
+    prompt_template = load_prompt_template(
+        "bullet_list_to_gherkin.txt",
+        input_variables=["bullet_list"]
+    )
+    formatted_prompt = prompt_template.format(
+        bullet_list=bullet_list
+    )
+    
+    # Initialize the LLM with the API key
+    # Using gemini-2.5-flash-lite: fastest, cost-efficient, stable model
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash-lite",
+        google_api_key=get_gemini_api_key(),
+        temperature=0,  # Lower temperature for more consistent output
+    )
+    
+    # Call the LLM
+    response = llm.invoke(formatted_prompt)
+    
+    # Extract the Gherkin output from the response
+    gherkin = response.content if hasattr(response, 'content') else str(response)
+    
+    # Clean up the output (remove any leading/trailing whitespace)
+    gherkin = gherkin.strip()
+    
+    state["gherkin"] = gherkin
     return state
 
 

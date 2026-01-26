@@ -32,10 +32,12 @@ test('login test', async ({ page }) => {
     bullet_list = result.get('bullet_list', 'Not generated')
     print(bullet_list)
     
+    print("\n=== Step 7 Verification: Gherkin Output ===")
+    gherkin_output = result.get('gherkin') or 'Not generated yet'
+    print(gherkin_output)
+    
     print("\n=== Workflow Status ===")
     print("Workflow completed!")
-    gherkin_output = result.get('gherkin') or 'Not generated yet'
-    print(f"Gherkin output: {gherkin_output[:100]}..." if len(gherkin_output) > 100 else f"Gherkin output: {gherkin_output}")
 
 
 if __name__ == "__main__":

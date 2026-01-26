@@ -1,5 +1,6 @@
-Here is a list of actions executed on a website. Those actions represent a test.
-I would like you to format this test in Gherkin language.
+Transform this list of actions into Gherkin format.
+
+Output only the Gherkin code, without any explanatory text, markdown code blocks, or introduction.
 
 Actions:
 ```
