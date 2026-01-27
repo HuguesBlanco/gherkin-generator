@@ -9,6 +9,7 @@ dependencies = [
     "langchain-google-genai",
     "python-dotenv",
     "langchain-core",
+    "streamlit",
 ]
 
 [build-system]

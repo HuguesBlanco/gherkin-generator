@@ -45,3 +45,5 @@ source venv/bin/activate
 ```bash
 python main.py
 ```
+
+The Streamlit UI will open in your browser automatically.
