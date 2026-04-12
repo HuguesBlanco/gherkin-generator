@@ -10,6 +10,7 @@ dependencies = [
     "python-dotenv",
     "langchain-core",
     "streamlit",
+    "langchain-mcp-adapters",
 ]
 
 [build-system]
