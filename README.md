@@ -1,49 +1,57 @@
 # Gherkin Generator
 
-A proof-of-concept Python app using LangGraph to convert Playwright recorder scripts into Gherkin tests.
+A Python proof of concept built with LangGraph to automate Gherkin test generation.
 
-## 1. Initial Setup (One-time)
+## 1. One-time setup
 
-Do these steps only once after cloning the project.
+Run these steps once after cloning the repository.
 
-### 1.1 Prerequisites (Debian/Ubuntu)
+### 1.1 Prerequisite (Debian): Python `venv` support
 
-If you haven't already, install the virtual environment support:
-
+Install virtual environment support for Python, if it is not already available:
 ```bash
 sudo apt update
-sudo apt install python3.13-venv
+sudo apt install python3-venv
 ```
 
-### 1.2 Create Virtual Environment
+### 1.2 Create a virtual environment
 
 ```bash
 python3 -m venv venv
 ```
 
-### 1.3 Install Dependencies
+### 1.3 Install dependencies
+
+Activate the virtual environment:
 
 ```bash
-# This installs the project in "editable" mode (-e)
-# Changes to your files will be reflected immediately without re-installing.
 source venv/bin/activate
+```
+
+Install the project in editable mode (`-e`) so local code changes are immediately available without reinstalling:
+
+```bash
 pip install -e .
 ```
 
-## 2. Daily Development (Every session)
+### 1.4 Run the Playwright MCP server (Docker)
 
-Do these steps every time you open a new terminal to work on the project.
+Follow **[Playwright MCP Docker setup](documentation/playwright-mcp-docker-setup.md)** to start the Playwright MCP server with Docker.
 
-### 2.1 Activate Environment
+## 2. Daily workflow
+
+Use these steps each time you open a new terminal for this project.
+
+### 2.1 Activate the environment
 
 ```bash
 source venv/bin/activate
 ```
 
-### 2.2 Running the App
+### 2.2 Run the app
 
 ```bash
 python main.py
 ```
 
-The Streamlit UI will open in your browser automatically.
+The Streamlit UI opens automatically in your browser.
